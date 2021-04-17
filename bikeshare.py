@@ -192,23 +192,13 @@ def user_stats(city, df):
 
 def display_data(df):
     """ Displays 5 rows of raw data for user"""
-
-    display_loop = True
-    while display_loop:
-            display = input('Would you like to see the raw data? Enter yes or no: ')
-            if display.lower() == 'yes':
-               _innerloop = True
-               N = 0
-               while _innerloop:
-                       print(df[N:(N+5)])
-                       N += 5
-                       _innerloop = False
-                       display_loop = False
-                       raw_data_continue = input('More data? Enter yes or no: ')
-                       if raw_data_continue.lower() == 'yes':
-                           _innerloop = True
-            else:
-                display_loop = False
+    from tabulate import tabulate
+    while True:
+    display_data = input('\nWould you like to see 5 lines of raw data? Enter yes or no.\n')
+    if display_data.lower() != 'yes':
+        break
+    print(tabulate(df_default.iloc[np.arange(0+i,5+i)], headers ="keys"))
+    i+=5
 
 def main():
         _mainloop = True
