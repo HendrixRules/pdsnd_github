@@ -17,84 +17,29 @@ def get_filters():
         (str) month - name of the month to filter by, or "all" to apply no month filter
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
-    City_list = ["Chicago","New York City","Washington"]
-    Month_list = ["All","January","February","March","April","May","June"]
-    Day_list = ["All","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 
-    _outerloop, _innerloop1, _innerloop2, _innerloop3, _innerloop4, _innerloop5 = True, True, True, True, True, True
-    city_select, month_select, day_select = 0, 0, 0
-    print('Hola Amigo! You want US bikeshare data! I have US bikeshare data!\n')
+    print('Hello! Let\'s explore some US bikeshare data!')
+    # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
+    city = input('choose one of the three cities in our Database (chicago, new york city or washington): ')
+    while city.lower() not in ('chicago', 'new york city', 'washington'):
+        print('Database only have info for chicago, new york city or washington')
+        city = input('choose one of the three cities in our Database (chicago, new york city or washington): ')
 
-    #Main While Loop controlling entire loop
-    while _outerloop:
+    # get user input for month (all, january, february, ... , june)
+    months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
+    month = input('Choose a month (january, february, march, april, may, june) or all: ')
+    while month.lower() not in months:
+        print('invalid month. Check if it is one the current available months')
+        month = input('choose one of the current available months january, february, march, april, may, june or all: ')
 
-     #Inner Loop #1 - Gets user input for city (chicago, new york city, washington).
-        while _innerloop1:
-            try:
-                city_select = int(input("Please select number for desired city. \n(1) Chicago,(2) New York, (3) Washington: "))
-                if city_select < 4:
-                    _innerloop1 = False
-                else:
-                    print('That\'s not a valid number selection! Select again.')
-            except:
-                print('That\'s not a valid number selection! Select again.')
+    # get user input for day of week (all, monday, tuesday, ... sunday)
+    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']
+    day = input('Choose a day of the week (monday, tuesday, wednesday, thursday, fridary, saturday or sunday) and all for every data. Which one: ')
+    while day.lower() not in days:
+        print('check for typo')
+        day = input('Choose a day of the week (monday, tuesday, wednesday, thursday, fridary, saturday or sunday). Which one: ')
 
-     #Inner Loop #2 - Gets user filter selections (month,day)
-        while _innerloop2:
-            while _innerloop3:
-                try:
-                    filter_select = int(input("How would you like to filter the data?: (0) No Filter, (1) By Month, (2) By Day : "))
-                    if filter_select < 3:
-                        _innerloop3 = False
-                    else:
-                        print('That\'s not a valid number selection!')
-                except:
-                    print('That\'s not a valid number selection!')
-            if filter_select == 0:  #User selects no filter
-               _innerloop2 = False
-            elif filter_select == 1:  #Get user input for month if selected
-                while _innerloop4:
-                    try:
-                        month_select = int(input("Data available for January through Jun. \nChoose 0 for all months or (1) Jan, (2) Feb, (3) Mar, (4) Apr, (5) May, (6) Jun: "))
-                        if month_select < 7:
-                            _innerloop2 = False
-                            _innerloop4 = False
-                        else:
-                          print('That\'s not a valid number selection!')
-                    except:
-                        print('That\'s not a valid number selection!')
-            elif filter_select == 2:  #Get user input for day if selected
-                while _innerloop4:
-                    try:
-                        day_select = int(input("Select day of week. \nChoose 0 for all days or (1) Mon (2) Tues (3) Wed (4) Thur (5) Fri (6) Sat (7) Sun: "))
-                        if day_select < 8:
-                            _innerloop2 = False
-                            _innerloop4 = False
-                        else:
-                            print('That\'s not a valid number selection!')
-                    except:
-                        print('That\'s not a valid number selection!')
-            else:
-                print('That\'s not a valid number selection!')
-        print('\n')
-        print('-'*40)
-        city, month, day = City_list[city_select-1],Month_list[month_select],Day_list[day_select]
-        print("Hola amigo!  Filters selected - City: {}, Month: {}, Day: {}".format(city,month,day))
-        _innerloop5 = True
-        #Asks whether selections are ok or not.  If not, repeat loop again
-        while _innerloop5:
-            _repeat = input("All good on the selections? (yes or no): ")
-            try:
-                if _repeat.lower() == "yes":
-                    _outerloop = False
-                    _innerloop5 = False
-                elif _repeat.lower() == "no":
-                    _innerloop5 = False
-                    _innerloop1, _innerloop2, _innerloop3, _innerloop4 = True, True, True, True
-                    city_select, month_select, day_select = 0, 0, 0
-            except:
-                print("C'mon dude! Select yes or no or we shall be stuck in this loop forever!")
-
+    print('-'*40)
     return city.lower(), month.lower(), day.lower()
 
 
@@ -146,18 +91,18 @@ def time_stats(df):
     start_time = time.time()
     Month_list = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
-    # TO DO: display the most common month
+    # Display the most common month
 
     df['month'] = df['Start Time'].dt.month
     popular_month = int(df['month'].mode())
     print('Most Common Month: ', Month_list[popular_month-1])
 
-    # TO DO: display the most common day of week
+    # Display the most common day of week
     df['day_of_week'] = df['Start Time'].dt.weekday_name
     popular_day = df['day_of_week'].mode().values[0]
     print('Most Common Day of the Week: ',popular_day)
 
-    # TO DO: display the most common start hour
+    # Display the most common start hour
     df['hour'] = df['Start Time'].dt.hour
     popular_hour = int(df['hour'].mode())
     if popular_hour <= 12:
@@ -204,11 +149,11 @@ def trip_duration_stats(df):
     df['trip_duration_mins'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds().div(60))
     df['trip_duration_hours'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds().div(3600))
 
-    # TO DO: display total travel time
+    # Display total travel time
     tot_travel = round(df['trip_duration_hours'].sum(),2)
     print('Total bikeshare usage (hours): ',tot_travel)
 
-    # TO DO: display mean travel time
+    # Display mean travel time
     avg_travel_time = round(df['trip_duration_mins'].mean(),2)
     print('Average bikeshare usage (mins): ',avg_travel_time)
 
@@ -247,24 +192,13 @@ def user_stats(city, df):
 
 def display_data(df):
     """ Displays 5 rows of raw data for user"""
-
-    display_loop = True
-    pd.set_option('display.max_columns',200)
-    while display_loop:
-            display = input('Would you like to see the raw data? Enter yes or no: ')
-            if display.lower() == 'yes':
-               _innerloop = True
-               N = 0
-               while _innerloop:
-                       print(df[N:(N+5)])
-                       N += 5
-                       _innerloop = False
-                       display_loop = False
-                       raw_data_continue = input('More data? Enter yes or no: ')
-                       if raw_data_continue.lower() == 'yes':
-                           _innerloop = True
-            else:
-                display_loop = False
+    from tabulate import tabulate
+    while True:
+    display_data = input('\nWould you like to see 5 lines of raw data? Enter yes or no.\n')
+    if display_data.lower() != 'yes':
+        break
+    print(tabulate(df_default.iloc[np.arange(0+i,5+i)], headers ="keys"))
+    i+=5
 
 def main():
         _mainloop = True
