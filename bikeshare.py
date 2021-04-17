@@ -91,18 +91,18 @@ def time_stats(df):
     start_time = time.time()
     Month_list = ['January','February','March','April','May','June','July','August','September','October','November','December']
 
-    # TO DO: display the most common month
+    # Display the most common month
 
     df['month'] = df['Start Time'].dt.month
     popular_month = int(df['month'].mode())
     print('Most Common Month: ', Month_list[popular_month-1])
 
-    # TO DO: display the most common day of week
+    # Display the most common day of week
     df['day_of_week'] = df['Start Time'].dt.weekday_name
     popular_day = df['day_of_week'].mode().values[0]
     print('Most Common Day of the Week: ',popular_day)
 
-    # TO DO: display the most common start hour
+    # Display the most common start hour
     df['hour'] = df['Start Time'].dt.hour
     popular_hour = int(df['hour'].mode())
     if popular_hour <= 12:
@@ -149,11 +149,11 @@ def trip_duration_stats(df):
     df['trip_duration_mins'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds().div(60))
     df['trip_duration_hours'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds().div(3600))
 
-    # TO DO: display total travel time
+    # Display total travel time
     tot_travel = round(df['trip_duration_hours'].sum(),2)
     print('Total bikeshare usage (hours): ',tot_travel)
 
-    # TO DO: display mean travel time
+    # Display mean travel time
     avg_travel_time = round(df['trip_duration_mins'].mean(),2)
     print('Average bikeshare usage (mins): ',avg_travel_time)
 
