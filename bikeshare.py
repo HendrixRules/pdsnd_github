@@ -249,6 +249,7 @@ def display_data(df):
     """ Displays 5 rows of raw data for user"""
 
     display_loop = True
+    pd.set_option('display.max_columns',200)
     while display_loop:
             display = input('Would you like to see the raw data? Enter yes or no: ')
             if display.lower() == 'yes':
