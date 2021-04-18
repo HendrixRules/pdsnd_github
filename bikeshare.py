@@ -145,7 +145,7 @@ def trip_duration_stats(df):
     print('\nCalculating Trip Duration...\n')
     start_time = time.time()
 
-
+    df['trip_duration_secs'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds())
     df['trip_duration_mins'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds().div(60))
     df['trip_duration_hours'] = (df['End Time'].sub(df['Start Time']).dt.total_seconds().div(3600))
 
