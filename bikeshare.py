@@ -18,28 +18,80 @@ def get_filters():
         (str) day - name of the day of week to filter by, or "all" to apply no day filter
     """
 
-    print('Hello! Let\'s explore some US bikeshare data!')
-    # get user input for city (chicago, new york city, washington). HINT: Use a while loop to handle invalid inputs
-    city = input('choose one of the three cities in our Database (chicago, new york city or washington): ')
-    while city.lower() not in ('chicago', 'new york city', 'washington'):
-        print('Database only have info for chicago, new york city or washington')
-        city = input('choose one of the three cities in our Database (chicago, new york city or washington): ')
+    _outerloop, _innerloop1, _innerloop2, _innerloop3, _innerloop4, _innerloop5 = True, True, True, True, True, True
+    city_select, month_select, day_select = 0, 0, 0
+    print('Hola Amigo! You want US bikeshare data! I have US bikeshare data!\n')
 
-    # get user input for month (all, january, february, ... , june)
-    months = ['january', 'february', 'march', 'april', 'may', 'june', 'all']
-    month = input('Choose a month (january, february, march, april, may, june) or all: ')
-    while month.lower() not in months:
-        print('invalid month. Check if it is one the current available months')
-        month = input('choose one of the current available months january, february, march, april, may, june or all: ')
+    #Main While Loop controlling entire loop
+    while _outerloop:
 
-    # get user input for day of week (all, monday, tuesday, ... sunday)
-    days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday', 'all']
-    day = input('Choose a day of the week (monday, tuesday, wednesday, thursday, fridary, saturday or sunday) and all for every data. Which one: ')
-    while day.lower() not in days:
-        print('check for typo')
-        day = input('Choose a day of the week (monday, tuesday, wednesday, thursday, fridary, saturday or sunday). Which one: ')
+     #Inner Loop #1 - Gets user input for city (chicago, new york city, washington).
+        while _innerloop1:
+            try:
+                city_select = int(input("Please select number for desired city. \n(1) Chicago,(2) New York, (3) Washington: "))
+                if city_select < 4:
+                    _innerloop1 = False
+                else:
+                    print('That\'s not a valid number selection! Select again.')
+            except:
+                print('That\'s not a valid number selection! Select again.')
 
-    print('-'*40)
+     #Inner Loop #2 - Gets user filter selections (month,day)
+        while _innerloop2:
+            while _innerloop3:
+                try:
+                    filter_select = int(input("How would you like to filter the data?: (0) No Filter, (1) By Month, (2) By Day : "))
+                    if filter_select < 3:
+                        _innerloop3 = False
+                    else:
+                        print('That\'s not a valid number selection!')
+                except:
+                    print('That\'s not a valid number selection!')
+            if filter_select == 0:  #User selects no filter
+               _innerloop2 = False
+            elif filter_select == 1:  #Get user input for month if selected
+                while _innerloop4:
+                    try:
+                        month_select = int(input("Data available for January through Jun. \nChoose 0 for all months or (1) Jan, (2) Feb, (3) Mar, (4) Apr, (5) May, (6) Jun: "))
+                        if month_select < 7:
+                            _innerloop2 = False
+                            _innerloop4 = False
+                        else:
+                          print('That\'s not a valid number selection!')
+                    except:
+                        print('That\'s not a valid number selection!')
+            elif filter_select == 2:  #Get user input for day if selected
+                while _innerloop4:
+                    try:
+                        day_select = int(input("Select day of week. \nChoose 0 for all days or (1) Mon (2) Tues (3) Wed (4) Thur (5) Fri (6) Sat (7) Sun: "))
+                        if day_select < 8:
+                            _innerloop2 = False
+                            _innerloop4 = False
+                        else:
+                            print('That\'s not a valid number selection!')
+                    except:
+                        print('That\'s not a valid number selection!')
+            else:
+                print('That\'s not a valid number selection!')
+        print('\n')
+        print('-'*40)
+        city, month, day = City_list[city_select-1],Month_list[month_select],Day_list[day_select]
+        print("Hola amigo!  Filters selected - City: {}, Month: {}, Day: {}".format(city,month,day))
+        _innerloop5 = True
+        #Asks whether selections are ok or not.  If not, repeat loop again
+        while _innerloop5:
+            _repeat = input("All good on the selections? (yes or no): ")
+            try:
+                if _repeat.lower() == "yes":
+                    _outerloop = False
+                    _innerloop5 = False
+                elif _repeat.lower() == "no":
+                    _innerloop5 = False
+                    _innerloop1, _innerloop2, _innerloop3, _innerloop4 = True, True, True, True
+                    city_select, month_select, day_select = 0, 0, 0
+            except:
+                print("C'mon dude! Select yes or no or we shall be stuck in this loop forever!")
+
     return city.lower(), month.lower(), day.lower()
 
 
